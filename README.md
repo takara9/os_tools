@@ -130,7 +130,12 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 
 
 ###(a) アップロード
+   
+引数は３個で、それぞれ以下の様になります。ローカルファイルをチャンク・サイズに分割して転送しますから、5Gバイトの制限を超えるファイルサイズでもアップロードできます。ダウロードの際は、このオブジェクト名は、マニフェストになっているので、チャンクに分割されたオブジェクトを１本のファイルの統合してダウンロードできます。
+  
+    os_upload.py ローカルファイル名 コンテナ名 オブジェクト名
 
+コマンドの使用例で、サイズを表示後、チャンク・サイズ毎に、順次アップロードします。
 
     $ ./os_upload.py test17-2.vhd VHD test17.vhd-0.vhd
     input file size = 4354803712
@@ -144,9 +149,30 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 
 ###(b) ダウンロード
 
+コマンドの引数は、３個で以下になります。
+
+    $ ./os_download.py コンテナ名 オブジェクト名 保存先ファイル名
+
+利用例です。実行中は異常終了しない限り、メッセージも何も表示しません。
+
+    $ ./os_download.py VHD test8.vhd-0.vhd testimage.vhd
+    $
+
+
 ###(c) コンテナ内のオブジェクトのリスト取得
 
+引数はコンテナ名だけです。次の実行例では、コンテナ iso に含まれるオブジェクトのリストを表示しています。 これは前述のアップロードツールを利用して登録したものですが、カスタマー・ポータル画面上では、マニフェストである ubuntu-14.04.2-server-amd64.iso のみ表示される事になります。実態のチャンクを参照するために、このツールを利用することができます。
+
+    $ ./os_list.py iso
+    StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0002/path, UnknownB)
+    StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0003/path, UnknownB)
+    StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/path, UnknownB)
+    StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0001/path, UnknownB)
+
+
 ###(d) 削除
+
+
 
 
 
