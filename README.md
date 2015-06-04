@@ -131,7 +131,7 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 
 ###(a) アップロード
    
-引数は３個で、それぞれ以下の様になります。ローカルファイルをチャンク・サイズに分割して転送しますから、5Gバイトの制限を超えるファイルサイズでもアップロードできます。ダウロードの際は、このオブジェクト名は、マニフェストになっているので、チャンクに分割されたオブジェクトを１本のファイルの統合してダウンロードできます。
+引数は３個で、それぞれ以下の様になります。ローカルファイルをチャンク・サイズに分割して転送しますから、5Gバイトの制限を超えるファイルサイズでもアップロードできます。ダウロードの際は、このオブジェクト名は、マニフェストになっているので、チャンクに分割されたオブジェクトを１本のファイルに統合してダウンロードできます。
   
     os_upload.py ローカルファイル名 コンテナ名 オブジェクト名
 
@@ -172,7 +172,14 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 
 ###(d) 削除
 
+オブジェクトを一つ一つ削除するのは大変なので、マニフェスト名を指定して、その実態のチャンクも含めて削除するコマンドです。
 
+    $ ./os_delete.py iso ubuntu-14.04.2-server-amd64.iso
+    Delete StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0002, 0B)
+    Delete StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0001, 0B)
+    Delete StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0003, 0B)
+    $ ./os_list.py iso
+    $
 
 
 
