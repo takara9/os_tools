@@ -37,7 +37,7 @@ CentOS6では、InsecurePlatformWarningのワーニングが表示されるの�
     git clone https://github.com/takara9/os_tools.git
     cd os_tools
     ls
-    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
 
 この後、それぞれのファイルのusername,api-keyを変更して実行します。
 CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  に置き換えます。
@@ -53,8 +53,9 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
     pip install softlayer-object-storage
     apt-get install git -y
     git clone https://github.com/takara9/os_tools.git
+    cd os_tools
     ls
-    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
 
 この後、それぞれのファイルのusername,api-keyを変更して実行します。
 
@@ -69,8 +70,9 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
     pip install requests==2.5.3
     exit
     git clone https://github.com/takara9/os_tools.git
+    cd os_tools
     ls
-    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
 
 この後は同じです。 Ubuntuの場合と同じです。
 
@@ -93,8 +95,9 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
 Windowsのgitは、https://msysgit.github.io/  からダウンロードしてインストールします。環境変数のPathにgitの導入先のC:\Program Files (x86)\Git\binを追加します。コマンド プロンプトを起動してクローンを作成します。
 
     git clone https://github.com/takara9/os_tools.git
+    cd os_tools
     ls
-    README.md  x1_add_user.py  x2_list_user.py  x3_del_user.py
+    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
 
 この後は他のOSと同じです。
 
@@ -102,70 +105,33 @@ Windowsのgitは、https://msysgit.github.io/  からダウンロードしてイ
 
 ### usernameとapi-keyの取得方法
 
-SOFTLAYERのポータル画面で、Account -> Users へ進み、実行したいユーザー名の行で、API Keyの列で、GenerateをクリックするとViewに変わる。　このViewをクリックして、表示されたAPI Keyをコピペして利用する。
+オブジェクト・ストレージを利用するには、SOFTLAYERのポータル画面のAccount -> Usersで得られるユーザー名とAPIキーではなく、オブジェクト・ストレージのユーザー名とキーが必要です。
+
+オブジェクト・ストレージのユーザー名とAPIキーの取得は、以下の順になります。
+Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Credentials
+
+オブジェクト・ストレージのユーザー名を取得していない場合は、Storage -> Object Storage -> Order Object Storage からオーダーして、ユーザー名を取得できます。
 
 
 ##使い方
 
-それぞれのファイルのヘッダー部分に、利用法を記載してあります。次の使い方は、x1_add_user.pyのヘッダー部分に記載したものです。
+それぞれのPythonコードに、引数の個数が正しく無い場合のメッセージを付けていますので、コードを見るのが、一番安心できると思います。
 
-- 実行ユーザーのユーザーIDとAPI-KEY（パスワード）をセットする(1)
-- ユーザーの属性情報(2)を編集して、利用目的に則した内容にする
-- ユーザーに与える権限のリスト(3)を編集（そのままでもOK）
-- 本プログラムの実行
-- 作成するユーザー数をインプット
-- ユーザーIDとパスワードのリストをコピペして保存
-- 実行結果の確認（ポータルのAccount->Usersで確認)
-- 演習ユーザーの利用(ハンズオン・セッション）
-- ユーザーの削除 x3_del_user.py
-
-
+					
 ##使用例
 
-###(a) ユーザー追加
+###(a) アップロード
 
-このコマンドは、子ユーザーを作成して、パーミションの設定、アクセス制御の設定を実行します。以下のusernameとpasswordをコピペして、セッションの参加者に配布します。
+###(b) ダウンロード
 
-    $./x1_add_user.py
-    How many the child user id do you want to add ? 3
-    Current User = hack91800
-    username = hack71187  password = ddnSeF$7
-    username = hack71188  password = dgUygm#2
-    username = hack71189  password = hropnH!8
+###(c) コンテナ内のオブジェクトのリスト取得
 
-このコマンドを実行するユーザーは、プライマリ・アカウントである必要はありません。子ユーザーで、さらに子、プライマリ・アカウントからは孫になるユーザーを作ることができます。
-
-
-###(b) ユーザーのリスト表示
-
-子ユーザーをリストします。子ユーザーを作る前に、このコマンドで既存の子ユーザーを確認できます。
-
-    $ ./x2_list_user.py
-    Current User = hack91800
-    Username               id        firstName                 lastName
-    hack71187              367237    Hands on user             expire in 3 days
-    hack71188              367239    Hands on user             expire in 3 days
-    hack71189              367241    Hands on user             expire in 3 days　
-
-
-###(c) ユーザーの削除
-自ユーザーの子ユーザーを一括削除します。
-
-    $ ./x3_del_user.py
-    Current User = hack91800
-    Username               id        userStatusId
-    hack71187              367237    1001
-    hack71188              367239    1001
-    hack71189              367241    1001
+###(d) 削除
 
 
 
-##注意点
-
-子ユーザーを一括で削除するので、必要なユーザー全てを消す可能性があります。
-ソフトレイヤーの制約により、削除した同じユーザー名は、しばらく再利用できません。
-
-
+##関連参照先
+- SoftLayer Object Storage Python Client https://github.com/softlayer/softlayer-object-storage-python
 
 ##作成者  
 
