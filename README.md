@@ -120,7 +120,27 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 					
 ##使用例
 
+最初に、Pythonコードの先頭部分にある以下の３項目を利用環境に合わせて変更します。
+
+    ###
+    # ユーザーID、パスワード、データセンター（ラベル）
+    uid = 'SL123456-1:SL123456'
+    upw = '71a8c0f9cd9*****************************************************'
+    odc = 'tok02'
+
+
 ###(a) アップロード
+
+
+    $ ./os_upload.py test17-2.vhd VHD test17.vhd-0.vhd
+    input file size = 4354803712
+    sending...  0.0 %
+    sending...  4.8 %
+    sending...  9.6 %
+    <-- 省略 -->
+    sending...  91.5 %
+    sending...  96.3 %
+
 
 ###(b) ダウンロード
 
