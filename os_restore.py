@@ -6,6 +6,7 @@ import os
 import sys
 import json
 
+#####
 # オブジェクト・ストレージ認証情報の取得
 f = open('./credentials.json', 'r')
 cred = json.load(f)
@@ -14,6 +15,9 @@ f.close()
 # コンテナとアップロード時のオブジェクト名
 cnt = ''
 obj = ''
+
+# ローカルファイル
+lfn = ''
 #####
 
 
@@ -21,23 +25,20 @@ obj = ''
 # メイン
 #
 if __name__ == '__main__':
-    argvs = sys.argv  # コマンドライン引数のリスト
+    #
+    argvs = sys.argv  # 引数リストの取得
     argc = len(argvs) # 個数
 
-    if (argc != 2):   
-        print 'Usage: os_list.py Container' 
+    if (argc != 3):   
+        print 'Usage: os_restore.py Container Object_name | restore rf -' 
         quit() 
-
-    cnt = argvs[1]
-    #
     oos = object_storage.get_client(cred['username'], cred['password'], datacenter=cred['data_center'])
 
-    obj = oos[cnt].objects()
-    for obn in obj:
-        print obn['path']
+    cnt = argvs[1]
+    obj = argvs[2]
+    lfn = argvs[3]
 
-    
-
+    oos[cnt][obj].save_to_filename(lfn)
 
 
 

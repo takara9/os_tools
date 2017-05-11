@@ -9,7 +9,12 @@ upload, download tools for SoftLayer Object Storage
 - os_download.py  Object Storage からローカルPCヘダウンロード
 - os_delete.py    Object Storageのオブジェクトを削除
 - os_list.py      コンテナを指定してオブジェクトのリストを取得
+- os_dump.py      dump コマンドと組み合わせて Linux のバックアップ
+- os_restore.py　 restore コマンドと組み合わせて バックアップからのリストア
 
+##認証情報サンプル
+- credentials.json.sample このファイルの.sample を削除してjsonファイルとして利用します。
+　　　 このファイルに、オブジェクト・ストレージのユーザーIDとパスワードをセットします。
   
 ##機能
 
