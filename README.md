@@ -188,4 +188,7 @@ Facebook https://www.facebook.com/maho.takara
 
 ##日付
 
-2015/6/4
+初版 2015/6/4
+更新 2017/5/11
+ - 認証情報をcredentials.json に集約
+ - dump / restore に対応する os_dump.py / os_restore.py を追加
