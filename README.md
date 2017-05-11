@@ -181,14 +181,14 @@ $ mv credentials.json.sample credentials.json
 ## 作成者  
 
 高良 真穂 (Maho Takara)
-email takara@jp.ibm.com, takara9@gmail.com
-Twitter @MahoTakara
-Facebook https://www.facebook.com/maho.takara
+- email takara@jp.ibm.com, takara9@gmail.com
+- Twitter @MahoTakara
+- Facebook https://www.facebook.com/maho.takara
 
 
-##日付
+## 日付
 
-初版 2015/6/4
-更新 2017/5/11
+- 初版 2015/6/4
+- 更新 2017/5/11
  - 認証情報をcredentials.json に集約
  - dump / restore に対応する os_dump.py / os_restore.py を追加
