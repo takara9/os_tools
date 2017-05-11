@@ -1,6 +1,3 @@
-# os_tools
-upload, download tools for Bliemix IaaS (SoftLayer) Object Storage 
-
 # Bluemix IaaS Object Storage のupload / download ツール
 
 ## python コード
@@ -13,8 +10,7 @@ upload, download tools for Bliemix IaaS (SoftLayer) Object Storage
 - os_restore.py　 restore コマンドと組み合わせて バックアップからのリストア
 
 ## 認証情報サンプル
-- credentials.json.sample このファイルの.sample を削除してjsonファイルとして利用します。
-　　　 このファイルに、オブジェクト・ストレージのユーザーIDとパスワードをセットします。
+- credentials.json.sample このファイルの.sample を削除してjsonファイルとして利用します。このファイルに、オブジェクト・ストレージのユーザーIDとパスワードをセットします。
   
 ## 機能
 
