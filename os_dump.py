@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# dump コマンドと組み合わせて Linux のOSバックアップ
+#
 import object_storage
 import os
 import sys
@@ -61,8 +63,8 @@ if __name__ == '__main__':
             oos[cnt][obj2].create()
             oos[cnt][obj2].send(bytes_read)
             seq = seq + 1
-            infile_sent = infile_sent + csz
-            print "sending...  %3.1f MB" % (infile_sent /1000/1000)
+            infile_sent = infile_sent + len(bytes_read)
+            print "sending...  %3.3f MB" % (infile_sent/1000/1000)
             bytes_read = fin.read(csz)
 
     except IOError as (errno, strerror):

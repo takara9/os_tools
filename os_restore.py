@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# restore コマンドと組み合わせて バックアップからのリストア
+#
+
 import object_storage
 import os
 import sys
@@ -36,9 +39,29 @@ if __name__ == '__main__':
 
     cnt = argvs[1]
     obj = argvs[2]
-    lfn = argvs[3]
 
-    oos[cnt][obj].save_to_filename(lfn)
+    sz = 209715200 # 200MB
+    os = None
+
+    try:
+        while 1:
+            buf = oos[cnt][obj].read(size=sz, offset=os)
+            sys.stdout.write(buf)
+            if len(buf) < sz:
+                break
+            if os == None:
+                os = 0
+            os = os + sz
+
+    except IOError as (errno, strerror):
+        print "I/O error({0}): {1}".format(errno, strerror)
+    except:
+        print "Unexpected error:", sys.exc_info()[0]
+        raise
+    finally:
+        pass
+
+
 
 
 

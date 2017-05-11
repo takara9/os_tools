@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+#  ローカルPCからObject Storageへアップロード
+#
+
 import object_storage
 import os
 import sys

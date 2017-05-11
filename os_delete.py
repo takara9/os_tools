@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# Object Storageのオブジェクトを削除
+#
+
 import object_storage
 import os
 import sys

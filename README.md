@@ -1,7 +1,7 @@
 # os_tools
-upload, download tools for SoftLayer Object Storage 
+upload, download tools for Bliemix IaaS (SoftLayer) Object Storage 
 
-# SOFTLAYER Object Storage のupload / download サンプルツール
+# Bluemix IaaS Object Storage のupload / download ツール
 
 ## python コード
 
@@ -9,7 +9,7 @@ upload, download tools for SoftLayer Object Storage
 - os_download.py  Object Storage からローカルPCヘダウンロード
 - os_delete.py    Object Storageのオブジェクトを削除
 - os_list.py      コンテナを指定してオブジェクトのリストを取得
-- os_dump.py      dump コマンドと組み合わせて Linux のバックアップ
+- os_dump.py      dump コマンドと組み合わせて Linux のOSバックアップ
 - os_restore.py　 restore コマンドと組み合わせて バックアップからのリストア
 
 ## 認証情報サンプル
@@ -26,7 +26,7 @@ upload, download tools for SoftLayer Object Storage
 ## インストール方法
 
 
-SoftLayerの仮想サーバーとパソコンにインストールして利用のどちらでも、対応できます。
+Bluemix IaaS の仮想サーバーとパソコンにインストールして利用のどちらでも、対応できます。
 
 
 ### CentOS6 x86_64 の場合
@@ -42,11 +42,7 @@ CentOS6では、InsecurePlatformWarningのワーニングが表示されるの�
     pip install softlayer-object-storage
     pip install requests==2.5.3
     git clone https://github.com/takara9/os_tools.git
-    cd os_tools
-    ls
-    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
 
-この後、それぞれのファイルのusername,api-keyを変更して実行します。
 CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm  に置き換えます。
 
 
@@ -60,11 +56,6 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
     pip install softlayer-object-storage
     apt-get install git -y
     git clone https://github.com/takara9/os_tools.git
-    cd os_tools
-    ls
-    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
-
-この後、それぞれのファイルのusername,api-keyを変更して実行します。
 
 
 ### MacOS 10.9 の場合
@@ -77,11 +68,6 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
     pip install requests==2.5.3
     exit
     git clone https://github.com/takara9/os_tools.git
-    cd os_tools
-    ls
-    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
-
-この後は同じです。 Ubuntuの場合と同じです。
 
 
 ### Windows 8.1 / Windows 7 の場合
@@ -102,12 +88,6 @@ CentOS7 x86_64の場合は、rpm -iUvh http://dl.fedoraproject.org/pub/epel/7/x8
 Windowsのgitは、https://msysgit.github.io/  からダウンロードしてインストールします。環境変数のPathにgitの導入先のC:\Program Files (x86)\Git\binを追加します。コマンド プロンプトを起動してクローンを作成します。
 
     git clone https://github.com/takara9/os_tools.git
-    cd os_tools
-    ls
-    README.md os_delete.py	os_download.py	os_list.py	os_upload.py
-
-この後は他のOSと同じです。
-
 
 
 ### usernameとapi-keyの取得方法
@@ -120,23 +100,31 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 オブジェクト・ストレージのユーザー名を取得していない場合は、Storage -> Object Storage -> Order Object Storage からオーダーして、ユーザー名を取得できます。
 
 
-##使い方
+## 使い方
 
 それぞれのPythonコードに、引数の個数が正しく無い場合のメッセージを付けていますので、コードを見るのが、一番安心できると思います。
 
 					
-##使用例
+## 使用例
 
-最初に、Pythonコードの先頭部分にある以下の３項目を利用環境に合わせて変更します。
+最初に、下記の様に認証情報のファイル名を変更します。
 
-    ###
-    # ユーザーID、パスワード、データセンター（ラベル）
-    uid = 'SL123456-1:SL123456'
-    upw = '71a8c0f9cd9*****************************************************'
-    odc = 'tok02'
+~~~
+$ mv credentials.json.sample credentials.json
+~~~
+
+次に、前述のオブジェクト・ストレージの認証情報をファイルへコピペします。
+
+~~~
+{
+    "username": "IBMOS000001-1:IBM000001",
+    "password": "63411c19faee094567cab66d5127e40f5b8f13192cbcc16d21b751f330e13df",
+    "data_center": "tok02"
+}
+~~~
 
 
-###(a) アップロード
+### (a) アップロード
    
 引数は３個で、それぞれ以下の様になります。ローカルファイルをチャンク・サイズに分割して転送しますから、5Gバイトの制限を超えるファイルサイズでもアップロードできます。ダウロードの際は、このオブジェクト名は、マニフェストになっているので、チャンクに分割されたオブジェクトを１本のファイルに統合してダウンロードできます。
   
@@ -154,7 +142,7 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
     sending...  96.3 %
 
 
-###(b) ダウンロード
+### (b) ダウンロード
 
 コマンドの引数は、３個で以下になります。
 
@@ -166,7 +154,7 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
     $
 
 
-###(c) コンテナ内のオブジェクトのリスト取得
+### (c) コンテナ内のオブジェクトのリスト取得
 
 引数はコンテナ名だけです。次の実行例では、コンテナ iso に含まれるオブジェクトのリストを表示しています。 これは前述のアップロードツールを利用して登録したものですが、カスタマー・ポータル画面上では、マニフェストである ubuntu-14.04.2-server-amd64.iso のみ表示される事になります。実態のチャンクを参照するために、このツールを利用することができます。
 
@@ -177,7 +165,7 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
     StorageObject(iso, ubuntu-14.04.2-server-amd64.iso/chunk-0001/path, UnknownB)
 
 
-###(d) 削除
+### (d) 削除
 
 オブジェクトを一つ一つ削除するのは大変なので、マニフェスト名を指定して、その実態のチャンクも含めて削除するコマンドです。
 
@@ -190,14 +178,16 @@ Storage -> Object Storage -> [Object Storage User Id] -> [Datacenter] -> View Cr
 
 
 
-##関連参照先
+## 関連参照先
 - SoftLayer Object Storage Python Client https://github.com/softlayer/softlayer-object-storage-python
 
-##作成者  
+
+## 作成者  
 
 高良 真穂 (Maho Takara)
-takara@jp.ibm.com, takara9@gmail.com, @MahoTakara
-https://www.facebook.com/profile.php?id=100002198440895
+email takara@jp.ibm.com, takara9@gmail.com
+Twitter @MahoTakara
+Facebook https://www.facebook.com/maho.takara
 
 
 ##日付

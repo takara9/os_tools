@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# コンテナを指定してオブジェクトのリストを取得
+#
+
 import object_storage
 import os
 import sys
