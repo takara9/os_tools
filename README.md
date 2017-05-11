@@ -1,9 +1,9 @@
 # os_tools
 upload, download tools for SoftLayer Object Storage 
 
-#SOFTLAYER Object Storage のupload / download サンプルツール
+# SOFTLAYER Object Storage のupload / download サンプルツール
 
-##python コード
+## python コード
 
 - os_upload.py    ローカルPCからObject Storageへアップロード
 - os_download.py  Object Storage からローカルPCヘダウンロード
@@ -12,18 +12,18 @@ upload, download tools for SoftLayer Object Storage
 - os_dump.py      dump コマンドと組み合わせて Linux のバックアップ
 - os_restore.py　 restore コマンドと組み合わせて バックアップからのリストア
 
-##認証情報サンプル
+## 認証情報サンプル
 - credentials.json.sample このファイルの.sample を削除してjsonファイルとして利用します。
 　　　 このファイルに、オブジェクト・ストレージのユーザーIDとパスワードをセットします。
   
-##機能
+## 機能
 
 オブジェクト・ストレージには、5Gバイトを超えるサイズのファイルを登録できないという制約があります。この制約を補完する機能はオブジェクト・ストレージに備わっているのですが、APIを利用しないと利用できない課題がありました。このサンプルは、5GBを超えるファイルの登録と取得を一括でおこなうものです。
 
 このツールでは、マニフェストというオブジェクトを作成して、大きなファイルをチャックに分けて登録します。カスタマーポータル上は、一個のオブジェクトしか見えず、この一個をクリックすると、5GBを超える大きなオブジェクトを取得する事が出来ます。　カスタマーポータルでラージ・オブジェクトを操作するのは大変です。また、CloudBerryを使ったり、Swiftコマンドをインストールするのも面倒という場合に役立つツールです。
 
 
-##インストール方法
+## インストール方法
 
 
 SoftLayerの仮想サーバーとパソコンにインストールして利用のどちらでも、対応できます。
