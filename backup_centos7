@@ -36,11 +36,21 @@ FN=credentials.json
 ./os_put.py /root/os_tools/$FN $CNT_NAME $FN
 
 # BOOT 
-xfsdump -l 0 - /dev/sda1 | ./os_dump.py $CNT_NAME sda1
+DEVICE=sda1
+printf "=== $DEVICE ===\n" > xfsdump.log
+xfsdump -L $DEVICE -l 0 - /dev/$DEVICE 2>> xfsdump.log | ./os_dump.py $CNT_NAME $DEVICE
 
+printf "\n" >> xfsdump.log
 # ROOT
-xfsdump -l 0 - /dev/sda3 | ./os_dump.py $CNT_NAME sda3
+DEVICE=sda3
+printf "=== $DEVICE ===\n" >> xfsdump.log
+xfsdump -L $DEVICE -l 0 - /dev/$DEVICE 2>> xfsdump.log | ./os_dump.py $CNT_NAME $DEVICE
 
+# xfsdump.log
+FN=xfsdump.log
+./os_put.py ./$FN $CNT_NAME $FN
+
+grep "session " xfsdump.log
 
 
 
