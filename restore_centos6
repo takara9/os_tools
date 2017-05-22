@@ -8,6 +8,8 @@ mount -t ext4  /dev/sda3 /sysimage
 mount -t ext2  /dev/sda1 /sysimage/boot
 
 cd /sysimage
+rm -fr *
+
 ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $HOSTNAME sda3 | restore -rf -
 
