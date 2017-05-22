@@ -6,6 +6,7 @@ mkdir /sysimage
 mkdir /sysimage/boot
 mount -t ext4  /dev/sda3 /sysimage
 mount -t ext2  /dev/sda1 /sysimage/boot
+
 cd /sysimage
 ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $HOSTNAME sda3 | restore -rf -
@@ -15,11 +16,12 @@ ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $HOSTNAME sda1 | restore -rf -
 
 ls -l /dev/disk/by-uuid/
+cat /sysimage/etc/fstab
+cat /sysimage/etc/grub.conf
 
-cat /etc/fstab
-
-cat /etc/grub.conf
-
+# 
+# vi /sysimage/etc/fstab
+# vi /sysimage/etc/fstab
 #
 # chroot /sysimage
 # export PATH=/bin:/sbin:$PATH
@@ -28,5 +30,10 @@ cat /etc/grub.conf
 # grub> root (hd0,0)
 # setup (hd0)
 # quit
+# exit
 # sync
+# sync
+# reboot
+#
+
 
