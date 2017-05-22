@@ -1,0 +1,18 @@
+#!/bin/bash
+
+export LANG=C
+
+yum update -y
+yum install curl gcc xfsdump -y
+
+if [ -e /usr/bin/pip ]; then
+    echo "pip available"
+else
+    curl -kL https://bootstrap.pypa.io/get-pip.py | python
+fi
+
+pip install requests==2.5.3
+pip install softlayer-object-storage
+
+
+

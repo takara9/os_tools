@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+#
+#
+#
+
+export LANG=C
+CNT_NAME=`hostname -s`
+
+# fdisk -l
+FN=fdisk_l.txt
+LANG=C;fdisk -l > /tmp/$FN
+./os_put.py /tmp/$FN $CNT_NAME $FN
+rm -f /tmp/$FN
+
+# df -m
+FN=df_m.txt
+LANG=C;df -m > /tmp/$FN
+./os_put.py /tmp/$FN $CNT_NAME $FN
+rm -f /tmp/$FN
+
+# /boot/grub2/grub.cfg
+FN=grub.cfg
+./os_put.py /boot/grub2/$FN $CNT_NAME $FN
+
+# /boot/grub2/device.map
+FN=device.map
+./os_put.py /boot/grub2/$FN $CNT_NAME $FN
+
+# /etc/fstab
+FN=fstab
+./os_put.py /etc/$FN $CNT_NAME $FN
+
+# /root/credentials.json
+FN=credentials.json
+./os_put.py /root/os_tools/$FN $CNT_NAME $FN
+
+# BOOT 
+xfsdump -l 0 - /dev/sda1 | ./os_dump.py $CNT_NAME sda1
+
+# ROOT
+xfsdump -l 0 - /dev/sda3 | ./os_dump.py $CNT_NAME sda3
+
+
+
+
