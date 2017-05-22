@@ -5,7 +5,7 @@
 #
 
 export LANG=C
-CNT_NAME="centos6_test"
+CNT_NAME=`hostname -s`
 
 # fdisk -l
 FN=fdisk_l.txt
