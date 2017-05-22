@@ -1,0 +1,43 @@
+#!/bin/bash
+
+HOSTNAME=
+
+mkdir /sysimage
+mkdir /sysimage/boot
+mount -t xfs  /dev/sda3 /sysimage
+mount -t xfs  /dev/sda1 /sysimage/boot
+
+cd /sysimage
+rm -fr *
+
+SESSION_ID=
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda3 | xfsrestore - -S $SESSION_ID /sysimage
+
+cd boot
+SESSION_ID=
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda1 | xfsrestore - -S $SESSION_ID /sysimage/boot
+
+ls -l /dev/disk/by-uuid/
+cat /sysimage/etc/fstab
+cat /sysimage/etc/grub.conf
+
+# 
+# vi /sysimage/etc/fstab
+# vi /sysimage/etc/fstab
+#
+# chroot /sysimage
+# export PATH=/bin:/sbin:$PATH
+# MAKEDEV sda
+# grub
+# grub> root (hd0,0)
+# setup (hd0)
+# quit
+# exit
+# sync
+# sync
+# reboot
+#
+
+
