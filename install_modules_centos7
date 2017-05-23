@@ -11,7 +11,6 @@ else
     curl -kL https://bootstrap.pypa.io/get-pip.py | python
 fi
 
-pip install requests==2.5.3
 pip install softlayer-object-storage
 
 

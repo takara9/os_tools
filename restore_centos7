@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOSTNAME=
+HOSTNAME=linux_backup
 
 mkdir /sysimage
 mkdir /sysimage/boot
@@ -10,31 +10,20 @@ mount -t xfs  /dev/sda1 /sysimage/boot
 cd /sysimage
 rm -fr *
 
-SESSION_ID=
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda3 | xfsrestore - -S $SESSION_ID /sysimage
+/root/os_tools/os_restore.py $HOSTNAME sda3 | xfsrestore - /sysimage
 
-cd boot
-SESSION_ID=
+cd /sysimage/boot
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda1 | xfsrestore - -S $SESSION_ID /sysimage/boot
+/root/os_tools/os_restore.py $HOSTNAME sda1 | xfsrestore - /sysimage/boot
 
 ls -l /dev/disk/by-uuid/
 cat /sysimage/etc/fstab
-cat /sysimage/etc/grub.conf
+cat /sysimage/etc/default/grub
 
-# 
-# vi /sysimage/etc/fstab
-# vi /sysimage/etc/fstab
-#
-# chroot /sysimage
-# export PATH=/bin:/sbin:$PATH
-# MAKEDEV sda
-# grub
-# grub> root (hd0,0)
-# setup (hd0)
-# quit
-# exit
+# vi /etc/fstab 
+# grub2-mkconfig
+# grub2-install --boot-directory /sysimage/boot /dev/sda
 # sync
 # sync
 # reboot
