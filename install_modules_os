@@ -2,18 +2,11 @@
 
 export LANG=C
 
-CENTOS_6="6.[0-9]"
-CENTOS_7="7.[0-9]"
-grep -E $CENTOS_6 /etc/redhat-release > /dev/null
-if [ $? -eq 0 ]; then
-	OS="6"
-else
-    grep -E $CENTOS_7 /etc/redhat-release > /dev/null
-    if [ $? -eq 0 ]; then
-	OS="7"
-    else
-	OS="0"
-    fi
+if [ -f /etc/redhat-release ]; then
+  OS=`cat /etc/redhat-release |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
+else 
+  printf "Unknown OS\n"
+  exit
 fi
 
 ######## CentOS common
