@@ -5,12 +5,18 @@ export LANG=C
 CNT_NAME=`hostname -s`
 ###
 
-if [ -f /etc/redhat-release ]; then
-  OS=`cat /etc/redhat-release |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
+OS_RELEASE=/etc/centos-release
+if [ -f $OS_RELEASE ]; then
+  OS=`cat $OS_RELEASE |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
+  OS_DIST=OS.txt
+  echo "CentOS" > $OS_DIST
+  ./os_put.py $OS_DIST $CNT_NAME $OS_DIST
+  ./os_put.py /etc/centos-release $CNT_NAME centos-release
 else 
   printf "Unknown OS\n"
   exit
 fi
+
 
 ######## CentOS common
 # fdisk -l

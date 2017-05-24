@@ -1,15 +1,33 @@
 #!/bin/bash
 
 ####################
-HOSTNAME=
+CNT_NAME=
 ####################
 
-if [ -f /etc/redhat-release ]; then
-  OS=`cat /etc/redhat-release |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
-else 
-  printf "Unknown OS\n"
-  exit
+./os_download.py $CNT_NAME OS.txt OS.txt
+
+OS_DIST=`cat OS.txt`
+
+if [ $OS_DIST = "CentOS" ]; then
+    OS_RELEASE=centos-release
+    ./os_download.py $CNT_NAME $OS_RELEASE $OS_RELEASE
+
+    if [ -f $OS_RELEASE ]; then
+	OS_VER=`cat $OS_RELEASE |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
+    else 
+	printf "Unknown OS\n"
+	exit
+    fi
+
+else
+    printf "Other Distribution\n"
+    exit
 fi
+
+echo
+echo $OS_DIST
+echo $OS_VER
+echo
 
 ######## CentOS common
 mkdir /sysimage
@@ -17,7 +35,7 @@ mkdir /sysimage/boot
 
 
 ######## CentOS 6
-if [ $OS -eq 6 ];then
+if [ $OS_VER -eq 6 ];then
 
 mount -t ext4  /dev/sda3 /sysimage
 mount -t ext2  /dev/sda1 /sysimage/boot
@@ -26,11 +44,11 @@ cd /sysimage
 rm -fr *
 
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda3 | restore -rf -
+/root/os_tools/os_restore.py $CNT_NAME sda3 | restore -rf -
 
 cd /sysimage/boot
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda1 | restore -rf -
+/root/os_tools/os_restore.py $CNT_NAME sda1 | restore -rf -
 
 ls -l /dev/disk/by-uuid/
 cat /sysimage/etc/fstab
@@ -55,7 +73,7 @@ cat /sysimage/etc/grub.conf
 
 
 ######## CentOS 7
-elif [ $OS -eq 7 ];then
+elif [ $OS_VER -eq 7 ];then
 
 mount -t xfs  /dev/sda3 /sysimage
 mount -t xfs  /dev/sda1 /sysimage/boot
@@ -64,11 +82,11 @@ cd /sysimage
 rm -fr *
 
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda3 | xfsrestore - /sysimage
+/root/os_tools/os_restore.py $CNT_NAME sda3 | xfsrestore - /sysimage
 
 cd /sysimage/boot
 ln -s /root/os_tools/credentials.json .
-/root/os_tools/os_restore.py $HOSTNAME sda1 | xfsrestore - /sysimage/boot
+/root/os_tools/os_restore.py $CNT_NAME sda1 | xfsrestore - /sysimage/boot
 
 ls -l /dev/disk/by-uuid/
 cat /sysimage/etc/fstab

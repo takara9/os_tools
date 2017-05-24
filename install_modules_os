@@ -2,8 +2,9 @@
 
 export LANG=C
 
-if [ -f /etc/redhat-release ]; then
-  OS=`cat /etc/redhat-release |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
+OS_RELEASE=/etc/centos-release
+if [ -f $OS_RELEASE ]; then
+  OS=`cat $OS_RELEASE |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
 else 
   printf "Unknown OS\n"
   exit
@@ -30,7 +31,7 @@ pip install softlayer-object-storage
 ######## CentOS 7
 elif [ $OS -eq 7 ];then
 
-yum install xfsdump -y
+yum install xfsdump dump -y
 pip install softlayer-object-storage
 
 
