@@ -1,0 +1,104 @@
+#!/bin/bash
+
+####################
+HOSTNAME=
+####################
+
+CENTOS_6="6.[0-9]"
+CENTOS_7="7.[0-9]"
+grep -E $CENTOS_6 /etc/redhat-release > /dev/null
+if [ $? -eq 0 ]; then
+	OS="6"
+else
+    grep -E $CENTOS_7 /etc/redhat-release > /dev/null
+    if [ $? -eq 0 ]; then
+	OS="7"
+    else
+	OS="0"
+    fi
+fi
+
+######## CentOS common
+mkdir /sysimage
+mkdir /sysimage/boot
+
+
+######## CentOS 6
+if [ $OS -eq 6 ];then
+
+mount -t ext4  /dev/sda3 /sysimage
+mount -t ext2  /dev/sda1 /sysimage/boot
+
+cd /sysimage
+rm -fr *
+
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda3 | restore -rf -
+
+cd /sysimage/boot
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda1 | restore -rf -
+
+ls -l /dev/disk/by-uuid/
+cat /sysimage/etc/fstab
+cat /sysimage/etc/grub.conf
+
+# 
+# vi /sysimage/etc/fstab
+# vi /sysimage/etc/fstab
+#
+# chroot /sysimage
+# export PATH=/bin:/sbin:$PATH
+# MAKEDEV sda
+# grub
+# grub> root (hd0,0)
+# setup (hd0)
+# quit
+# exit
+# sync
+# sync
+# reboot
+#
+
+
+######## CentOS 7
+elif [ $OS -eq 7 ];then
+
+mount -t xfs  /dev/sda3 /sysimage
+mount -t xfs  /dev/sda1 /sysimage/boot
+
+cd /sysimage
+rm -fr *
+
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda3 | xfsrestore - /sysimage
+
+cd /sysimage/boot
+ln -s /root/os_tools/credentials.json .
+/root/os_tools/os_restore.py $HOSTNAME sda1 | xfsrestore - /sysimage/boot
+
+ls -l /dev/disk/by-uuid/
+cat /sysimage/etc/fstab
+cat /sysimage/etc/default/grub
+
+# vi /etc/fstab 
+# grub2-mkconfig
+# grub2-install --boot-directory /sysimage/boot /dev/sda
+# sync
+# sync
+# reboot
+#
+
+
+######## Other
+else
+
+printf "Abort! due to unknown OS"
+exit
+
+fi
+
+
+
+
+

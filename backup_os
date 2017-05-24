@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# 
+#
+#
+
+###
+export LANG=C
+CNT_NAME=`hostname -s`
+###
+
+CENTOS_6="6.[0-9]"
+CENTOS_7="7.[0-9]"
+grep -E $CENTOS_6 /etc/redhat-release > /dev/null
+if [ $? -eq 0 ]; then
+	OS="6"
+else
+    grep -E $CENTOS_7 /etc/redhat-release > /dev/null
+    if [ $? -eq 0 ]; then
+	OS="7"
+    else
+	OS="0"
+    fi
+fi
+
+
+
+######## CentOS common
+# fdisk -l
+FN=fdisk_l.txt
+LANG=C;fdisk -l > /tmp/$FN
+./os_put.py /tmp/$FN $CNT_NAME $FN
+rm -f /tmp/$FN
+
+# df -m
+FN=df_m.txt
+LANG=C;df -m > /tmp/$FN
+./os_put.py /tmp/$FN $CNT_NAME $FN
+rm -f /tmp/$FN
+
+# /etc/fstab
+FN=fstab
+./os_put.py /etc/$FN $CNT_NAME $FN
+
+# /root/credentials.json
+FN=credentials.json
+./os_put.py /root/os_tools/$FN $CNT_NAME $FN
+
+
+
+######## CentOS 6
+if [ $OS -eq 6 ];then
+
+# /boot/grub/grub.conf
+FN=grub.conf
+./os_put.py /boot/grub/$FN $CNT_NAME $FN
+
+# BOOT 
+DEVICE=sda1
+printf "=== $DEVICE ===\n" > dump.log
+dump -0uf - /dev/sda1 2>> dump.log | ./os_dump.py $CNT_NAME $DEVICE
+
+# ROOT
+DEVICE=sda3
+printf "=== $DEVICE ===\n" >> dump.log
+dump -0uf - /dev/sda1 2>> dump.log | ./os_dump.py $CNT_NAME $DEVICE
+
+# LOG UPLOAD
+FN=dump.log
+./os_put.py $FN $CNT_NAME $FN
+
+
+
+
+######## CentOS 7
+elif [ $OS -eq 7 ];then
+
+# /boot/grub2/grub.cfg
+FN=grub.cfg
+./os_put.py /boot/grub2/$FN $CNT_NAME $FN
+
+# /boot/grub2/device.map
+FN=device.map
+./os_put.py /boot/grub2/$FN $CNT_NAME $FN
+
+# BOOT 
+DEVICE=sda1
+printf "=== $DEVICE ===\n" > xfsdump.log
+xfsdump -L $DEVICE -l 0 - /dev/$DEVICE 2>> xfsdump.log | ./os_dump.py $CNT_NAME $DEVICE
+
+printf "\n" >> xfsdump.log
+# ROOT
+DEVICE=sda3
+printf "=== $DEVICE ===\n" >> xfsdump.log
+xfsdump -L $DEVICE -l 0 - /dev/$DEVICE 2>> xfsdump.log | ./os_dump.py $CNT_NAME $DEVICE
+
+# LOG UPLOAD
+FN=xfsdump.log
+./os_put.py $FN $CNT_NAME $FN
+
+
+
+######## Other
+else
+printf "Abort! due to unknown OS"
+exit
+
+fi
+
+
+

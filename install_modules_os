@@ -1,0 +1,52 @@
+#!/bin/bash
+
+export LANG=C
+
+CENTOS_6="6.[0-9]"
+CENTOS_7="7.[0-9]"
+grep -E $CENTOS_6 /etc/redhat-release > /dev/null
+if [ $? -eq 0 ]; then
+	OS="6"
+else
+    grep -E $CENTOS_7 /etc/redhat-release > /dev/null
+    if [ $? -eq 0 ]; then
+	OS="7"
+    else
+	OS="0"
+    fi
+fi
+
+######## CentOS common
+yum update -y
+yum install curl gcc -y
+if [ -e /usr/bin/pip ]; then
+    echo "pip available"
+else
+    curl -kL https://bootstrap.pypa.io/get-pip.py | python
+fi
+
+
+######## CentOS 6
+if [ $OS -eq 6 ];then
+
+yum install dump -y
+pip install requests==2.5.3
+pip install softlayer-object-storage
+
+
+######## CentOS 7
+elif [ $OS -eq 7 ];then
+
+yum install xfsdump -y
+pip install softlayer-object-storage
+
+
+######## Other
+else
+
+printf "Abort! due to unknown OS"
+exit
+
+fi
+
+
