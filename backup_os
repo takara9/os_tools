@@ -1,10 +1,25 @@
 #!/bin/bash
-
-###
 export LANG=C
-CNT_NAME=`hostname -s`
-###
+source _bash_library
 
+####################
+#CNT_NAME=`hostname -s`   # server hostname
+CNT_NAME=
+####################
+if [ ! $CNT_NAME ]; then
+    keyboard_input "オブジェクト・ストレージのコンテナ名をインプットしてください : " 
+    if [ $? -eq 0 ]; then
+	CNT_NAME=$RESULT
+    fi
+fi
+
+# Install modules 
+FN=OS.txt
+if [ ! -f $FN ]; then
+    ./install_modules_os
+fi    
+
+# Upload OS distribution info
 OS_RELEASE=/etc/centos-release
 if [ -f $OS_RELEASE ]; then
   OS=`cat $OS_RELEASE |sed -e 's/[^0-9.]//g'|awk '/^[0-9]/ { print int($1) }'`
