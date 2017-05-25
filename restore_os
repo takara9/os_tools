@@ -1,10 +1,72 @@
 #!/bin/bash
+function confirmation() {
+    MSG="Yes または No をインプットしてください? [yes/no] : "
+    echo -n $MSG
 
+    while read response; do
+	case $response in
+            'yes' | 'Yes' | 'y' | 'Y' ) 
+		echo "受け付けました。"
+		return 1 ;;
+            'no' | 'No' | 'n' | 'N' )
+		echo "もう一度おねがいます。"
+		return 0 ;;
+            *)
+		echo "yes/no y/n で、もう一度おねがします。"
+		echo -n $MSG
+	esac
+    done
+}
+
+function keyboard_input() {
+    while true
+    do
+	echo -n $1 " "
+	read input_data
+	echo $input_data " で良いですか？"
+	confirmation
+	if [ $? -eq 1 ]; then
+	    RESULT=$input_data 
+	    return 0
+	elif [ $? -eq 0 ]; then
+	    continue;
+	fi
+    done
+
+}
+
+# /sysimage/etc/fstab の編集
+function edit_fstab() {
+    ## バックアップ前のuuid リスト取得
+    ## マージ
+    ## 書き換え
+
+}
+
+
+# 以下に値をセットすると対話なしで実行します。
 ####################
 CNT_NAME=
 ####################
 
-./os_download.py $CNT_NAME OS.txt OS.txt
+if [ ! $CNT_NAME ]; then
+    keyboard_input "オブジェクト・ストレージのコンテナ名をインプットしてください : " 
+    if [ $? -eq 0 ]; then
+	CNT_NAME=$RESULT
+    fi
+fi
+
+FN=OS.txt
+if [ ! -f $FN ]; then
+    #./install_modules_os
+    ./os_download.py $CNT_NAME OS.txt OS.txt
+    if [ $? = 1 ]; then
+	echo "コンテナが存在しません。終了します。"
+	rm -f $FN
+	exit
+    fi
+fi    
+
 
 OS_DIST=`cat OS.txt`
 
@@ -34,6 +96,7 @@ mkdir /sysimage
 mkdir /sysimage/boot
 
 
+
 ######## CentOS 6
 if [ $OS_VER -eq 6 ];then
 
@@ -49,6 +112,14 @@ ln -s /root/os_tools/credentials.json .
 cd /sysimage/boot
 ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $CNT_NAME sda1 | restore -rf -
+
+
+# /sysimage/etc/fstab の編集
+## バックアップ前のuuid リスト取得
+## マージ
+## 書き換え
+
+####
 
 ls -l /dev/disk/by-uuid/
 cat /sysimage/etc/fstab
@@ -87,6 +158,11 @@ ln -s /root/os_tools/credentials.json .
 cd /sysimage/boot
 ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $CNT_NAME sda1 | xfsrestore - /sysimage/boot
+
+
+# /sysimage/etc/fstab の編集
+
+####
 
 ls -l /dev/disk/by-uuid/
 cat /sysimage/etc/fstab

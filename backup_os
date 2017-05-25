@@ -39,7 +39,10 @@ FN=fstab
 FN=credentials.json
 ./os_put.py /root/os_tools/$FN $CNT_NAME $FN
 
-
+# device & uuid list upload
+FN=device_uuid_list_backup.txt
+ls -l /dev/disk/by-uuid/ |awk '{print $9 " " $11}' | sed -e 's/..//' -e 's/..\/..\///' -e '/^ *$/d' > $FN
+./os_put.py $FN $CNT_NAME $FN
 
 ######## CentOS 6
 if [ $OS -eq 6 ];then
