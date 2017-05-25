@@ -210,23 +210,15 @@ ln -s /root/os_tools/credentials.json .
 /root/os_tools/os_restore.py $CNT_NAME sda1 | xfsrestore - /sysimage/boot
 
 
-# /sysimage/etc/fstab の編集
-
-####
+#### edit /sysimage/etc/fstab
 create_device_diff_list
 edit_fstab
 
-#ls -l /dev/disk/by-uuid/
-#cat /sysimage/etc/fstab
-#cat /sysimage/etc/default/grub
-# vi /etc/fstab 
+### install boot loader grub2
 grub2-mkconfig
 grub2-install --boot-directory /sysimage/boot /dev/sda
 sync
 sync
-# reboot
-#
-
 
 ######## Other
 else
