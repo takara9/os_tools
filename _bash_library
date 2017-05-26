@@ -70,7 +70,7 @@ function create_device_diff_list() {
 
 # /sysimage/etc/fstab の編集
 function edit_fstab() {
-    $TARGET_FILE=/sysimage/etc/fstab
+    TARGET_FILE=/sysimage/etc/fstab
     ## fstab 書き換え??
     while read line
     do
@@ -83,7 +83,7 @@ function edit_fstab() {
 # /sysimage/etc/grub の編集 for CentOS6
 function edit_grub() {
     ## grub 書き換え??
-    $TARGET_FILE=/sysimage/etc/grub.conf
+    TARGET_FILE=/sysimage/etc/grub.conf
     ## fstab 書き換え??
     while read line
     do
