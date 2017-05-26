@@ -23,7 +23,7 @@ fi
 # install software modules
 FN=OS.txt
 if [ ! -f $FN ]; then
-    ./install_modules_os
+    ./_install_modules_os
     ./os_download.py $CNT_NAME OS.txt OS.txt
     if [ $? = 1 ]; then
 	echo "コンテナが存在しません。終了します。"

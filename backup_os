@@ -23,7 +23,7 @@ fi
 # Install modules 
 FN=OS.txt
 if [ ! -f $FN ]; then
-    ./install_modules_os
+    ./_install_modules_os
 fi    
 
 # Upload OS distribution info
