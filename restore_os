@@ -2,6 +2,12 @@
 export LANG=C
 source _bash_library
 
+# Check object storage authentication file
+if [ ! -f credentials.json ]; then
+    echo "オブジェクト・ストレージの認証情報をセットしてください。"
+    exit
+fi
+
 # 以下に値をセットすると対話なしで実行します。
 ####################
 CNT_NAME=

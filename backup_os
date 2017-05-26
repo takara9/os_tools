@@ -2,6 +2,13 @@
 export LANG=C
 source _bash_library
 
+# Check object storage authentication file
+if [ ! -f credentials.json ]; then
+    echo "オブジェクト・ストレージの認証情報をセットしてください。"
+    exit
+fi
+
+
 ####################
 #CNT_NAME=`hostname -s`   # server hostname
 CNT_NAME=
