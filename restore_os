@@ -86,27 +86,21 @@ create_device_diff_list
 edit_fstab
 edit_grub
 
-####
-#ls -l /dev/disk/by-uuid/
-#cat /sysimage/etc/fstab
-#cat /sysimage/etc/grub.conf
 
-# 
-# vi /sysimage/etc/fstab
-# vi /sysimage/etc/fstab
-#
-# chroot /sysimage
-# export PATH=/bin:/sbin:$PATH
-# MAKEDEV sda
-# grub
-# grub> root (hd0,0)
-# setup (hd0)
-# quit
-# exit
-# sync
-# sync
-# reboot
-#
+# install grub
+chroot /sysimage <<EOL
+export PATH=/bin:/sbin:$PATH
+MAKEDEV sda
+
+grub <<EOF
+root (hd0,0)
+setup (hd0)
+quit
+EOF
+
+EOL
+sync
+sync
 
 
 ######## CentOS 7
