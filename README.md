@@ -2,12 +2,19 @@
 
 ## python コード
 
-- os_upload.py    ローカルPCからObject Storageへアップロード
+- os_upload.py    ローカルPCからObject Storageへアップロード 5GB以上に対応
+- os_put.py       ローカルPCからObject Storageへアップロード 5GB未満
 - os_download.py  Object Storage からローカルPCヘダウンロード
 - os_delete.py    Object Storageのオブジェクトを削除
 - os_list.py      コンテナを指定してオブジェクトのリストを取得
-- os_dump.py      dump コマンドと組み合わせて Linux のOSバックアップ
-- os_restore.py　 restore コマンドと組み合わせて バックアップからのリストア
+
+## シェル
+
+- backup_os       ベアメタル CentOS 6/7 のオブジェクト・ストレージへバックアップ
+- restore_os      上記のリストア 
+
+OSのバックアップとリストアは、http://qiita.com/MahoTakara/items/88ea3514538ee7f5a2fa を参照してください。
+
 
 ## 認証情報サンプル
 - credentials.json.sample このファイルの.sample を削除してjsonファイルとして利用します。このファイルに、オブジェクト・ストレージのユーザーIDとパスワードをセットします。
@@ -186,9 +193,8 @@ $ mv credentials.json.sample credentials.json
 - Facebook https://www.facebook.com/maho.takara
 
 
-## 日付
+## 更新履歴
 
 - 初版 2015/6/4
-- 更新 2017/5/11
- - 認証情報をcredentials.json に集約
- - dump / restore に対応する os_dump.py / os_restore.py を追加
+- 更新 2017/5/11 認証情報をcredentials.json に集約
+- 更新 2017/5/26 backup_os / restore_os を追加 CentOS 6/7 対応
